@@ -82,3 +82,65 @@ FROM Table1 t1
 WHERE t1.ID NOT IN (SELECT t2.ID FROM Table2 t2);
 ```
 
+#### Correlated Subqueries
+- A correlated subquery is a subquery that is executed once for each row.
+- A correlated subquery returns results based on the column of the main query.
+``` sql
+SELECT t1.*
+FROM Table1 t1
+WHERE t1.ID IN 
+( SELECT t2.ID FROM Table2 t2 WHERE t2.value = t1.value )
+```
+
+### Joins Vs Subqueries
+- Joins
+  * Can include columns from joining tables in the `SELECT` clause.
+  * Easy to read and more intuitive.
+- Subqueries
+  * Can pass the aggregate values to the main query
+  * Simplifies long and complex queries. 
+
+Inner Join with Subquery
+```sql
+SELECT al.Name as Name, al.alarming as Alarming, rs.QCount AS AlarmCount
+FROM Alarms al
+INNER JOIN ( SELECT COUNT(Name) AS QCount, ra.Name
+FROM RecordedAlarms ra
+GROUP BY ra.Name ) rs ON rs.Name = al.Name;
+```
+Result:
+```
+| Name    | Alarming | AlarmCount |
+| Billing |        1 |          2 |
+| Hosting |        1 |         12 |
+| Sales   |        1 |          7 |
+| Inbound |        0 |          8 |
+| Managed |        0 |          1 |
+```
+
+## Summary for Joins, Unions, and Subqueries
+1. A `SQL JOIN` combines columns from two or more tables in a single result set.
+2. Always alias your column with table to avoid ambiguity in the code.
+3. `UNION` keyword removed all duplicate from result set but `UNION ALL` keyword does not.
+4. A correlated subquery is executed once for each row in the main query. 
+
+
+## Functions
+- Functions
+  * String Functions
+  * Numeric Functions
+  * Date/Time Functions
+  * Control Flow Functions
+  * Cast Functions
+  * Information Functions
+  * Miscellaneous Functions
+- Aggregate Functions/ Column Functions
+- Stored Functions/ User Defined Functions
+
+### Scalar Functions
+- A scalar function operates on a single value and returns a single value. 
+  * String Functions
+  * Numeric Functions
+  * Date/Time Functions
+
+#### String Functions
